@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import { Toast } from "@/utilities/types";
 import {
-    Button,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -25,9 +25,9 @@ interface StartToastFormProps {
 }
 
 const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
-  const [submitLoading, setSubmitLoading] = useState(false)
-  const [submitError, setSubmitError] = useState(false)
-  const { setToast } = use(ToastContext)
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+  const { setToast } = use(ToastContext);
 
   const handleClose = () => {
     setOpen(false);
@@ -43,19 +43,19 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
       rooms: 0,
     },
     onSubmit: async (toast: Toast) => {
-        console.log("fired")
-        setSubmitLoading(true);
-        setSubmitError(false);
-        const response = await startToast(toast);
-        if (!response) {
-            setSubmitError(true);
-            return;
-        }
-        toast.id = response.id
-        setToast(toast);
-        setSubmitLoading(false);
-        setOpen(false);
-        window.location.href = "/toasties"
+      console.log("fired");
+      setSubmitLoading(true);
+      setSubmitError(false);
+      const response = await startToast(toast);
+      if (!response) {
+        setSubmitError(true);
+        return;
+      }
+      toast.id = response.id;
+      setToast(toast);
+      setSubmitLoading(false);
+      setOpen(false);
+      window.location.href = "/toasties";
     },
   });
 
@@ -64,10 +64,14 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
       <DialogTitle>Start Buttered Toast</DialogTitle>
       <DialogContent>
         <form onSubmit={formik.handleSubmit}>
-          <TextField id="name" label="Name" variant="standard"
+          <TextField
+            id="name"
+            label="Name"
+            variant="standard"
             margin="dense"
             fullWidth
-            {...formik.getFieldProps("name")} />
+            {...formik.getFieldProps("name")}
+          />
           <TextField
             id="number"
             type="number"
@@ -83,7 +87,7 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
             variant="standard"
             margin="dense"
             sx={{
-              marginX: "1vw"
+              marginX: "1vw",
             }}
             {...formik.getFieldProps("date")}
           />
@@ -114,14 +118,19 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
               />
             </RadioGroup>
           </FormControl>
-
         </form>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={() => formik.handleSubmit()} loading={submitLoading}>Submit</Button> 
+        <Button onClick={() => formik.handleSubmit()} loading={submitLoading}>
+          Submit
+        </Button>
       </DialogActions>
-      {submitError ?? <Typography color="red" variant="body2">A backend error has occured; please try again or contact support</Typography>}
+      {submitError ?? (
+        <Typography color="red" variant="body2">
+          A backend error has occured; please try again or contact support
+        </Typography>
+      )}
     </Dialog>
   );
 };

@@ -70,6 +70,6 @@ const Home = () => {
       </Stack>
     </Container>
   );
-}
+};
 
 export default Home;

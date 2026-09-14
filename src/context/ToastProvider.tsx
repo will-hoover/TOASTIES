@@ -8,9 +8,9 @@ interface ToastProviderProps {
 }
 
 const ToastProvider = ({ children }: ToastProviderProps) => {
-  const id = sessionStorage.getItem("toast")
+  const id = sessionStorage.getItem("toast");
   const [toast, setToast] = useState<Toast | null>(id ? JSON.parse(id) : null);
-  
+
   const setToastContext = (t: Toast | null) => {
     setToast(t);
     if (t) sessionStorage.setItem("toast", JSON.stringify(t));
