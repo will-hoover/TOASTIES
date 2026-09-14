@@ -1,6 +1,6 @@
 "use client";
 
-import { rooms, addRoom } from "@/utilities/toastiesActions";
+import { rooms } from "@/utilities/toastiesActions";
 import {
   Alert,
   AppBar,
@@ -9,61 +9,68 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import RoomMenu from "./RoomMenu";
-import toast from "../../public/toast.png";
+import butterytoast from "../../public/toast.png";
 import Image from "next/image";
 import Link from "next/link";
+import { ToastContext } from "@/context/ToastContext";
 
 const NavBar = () => {
-  const [loading, setLoading] = useState<boolean>(false);
   const [roomCount, setRoomCount] = useState<number>(0);
   const [open, setOpen] = useState(false);
-
-  const handleAddRoom = async () => {
-    setLoading(true);
-    const newRoom = await addRoom();
-    setLoading(false);
-    setRoomCount(newRoom);
-    setOpen(true);
-  };
+  const { toast } = use(ToastContext);
 
   const handleSnackbarClose = () => setOpen(false);
 
   useEffect(() => {
-    async function getRooms() {
-      const count = await rooms();
-      setRoomCount(count);
+    if (toast !== null) {
+      async function getRooms() {
+        const count = await rooms();
+        setRoomCount(count);
+      }
+      getRooms();
     }
-    getRooms();
-  }, [roomCount]);
+  }, [roomCount, toast]);
 
   return (
     <div>
       <AppBar position="static">
         <Toolbar>
-          <Link href="/">
-            <Image src={toast} alt="tasty buttered toast" height="50" />
+          <Link href={toast ? "/toasties" : "/"}>
+            <Image src={butterytoast} alt="tasty buttered toast" height="50" />
           </Link>
-          <Link href="/">
+          <Link href={toast ? "/toasties" : "/"}>
             <Typography
               variant="h5"
               sx={{ margin: 1, marginLeft: 2, marginRight: 5 }}
             >
-              TOASTIES
+              {toast ? toast.name : "TOASTIES"}
             </Typography>
           </Link>
-          <RoomMenu text="Start packet" roomCount={roomCount} />
-          <RoomMenu text="Stats" roomCount={roomCount} stats />
-          <Button
-            loading={loading}
-            variant="outlined"
-            color="secondary"
-            onClick={handleAddRoom}
-            sx={{ margin: 1 }}
-          >
-            Add Room
-          </Button>
+          {toast ? (
+            <>
+              <RoomMenu text="Start packet" roomCount={roomCount} />
+              <RoomMenu text="Stats" roomCount={roomCount} stats />
+            </>
+          ) : (
+            <>
+              <Button
+                color="secondary"
+                variant="contained"
+                sx={{ marginX: 1.5 }}
+              >
+                Stats
+              </Button>
+              <Button
+                color="secondary"
+                variant="contained"
+                sx={{ marginX: 1.5 }}
+              >
+                Records
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
       <Snackbar

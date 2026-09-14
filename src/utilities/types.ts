@@ -1,5 +1,5 @@
 export type Toast = {
-  id: string;
+  id: string | null;
   number: number;
   name: string;
   date: Date;

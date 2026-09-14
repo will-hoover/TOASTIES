@@ -1,3 +1,4 @@
+"use client";
 import { Toast } from "@/utilities/types";
 import { createContext } from "react";
 

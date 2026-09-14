@@ -10,7 +10,10 @@ export async function startToast(toast: Toast) {
       console.log(`an error occured: ${reason}`);
       return;
     });
-  return response?.status === 201;
+  if (response?.status !== 201) {
+    return null
+  }
+  return response?.data as {number: number, id: string};
 }
 
 export async function getLiveToast() {

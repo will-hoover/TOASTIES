@@ -35,17 +35,17 @@ const ScoresheetForm = (props: ScoresheetProps) => {
   };
 
   const questionEntryProps = (question: Buzz[], index: number) => ({
-    number: index+1,
+    number: index + 1,
     buzzes: question,
     handleDelete: () => deleteQuestion(index),
     roster: props.roster,
-    current: index+1 === results.length,
+    current: index + 1 === results.length,
   });
 
   const onSubmitClick = async () => {
     if (invalidToast || toast == undefined) {
-        setInvalidToast(true);
-        return;
+      setInvalidToast(true);
+      return;
     }
     const scoresheet: Scoresheet = {
       toast: toast?.id,
