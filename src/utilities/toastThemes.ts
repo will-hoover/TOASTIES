@@ -1,6 +1,9 @@
 "use client";
 import { createTheme } from "@mui/material/styles";
 
+export const tigerOrange = "#f56702"
+export const juiceOrange = "#f3aa2c"
+
 export const toastTheme = createTheme({
   palette: {
     primary: {

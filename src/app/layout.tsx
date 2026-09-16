@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import { toastTheme } from "@/utilities/toastThemes";
-import { Box, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import ToastProvider from "@/context/ToastProvider";
 
 const geistSans = Geist({
@@ -34,7 +34,6 @@ export default function RootLayout({
         <ThemeProvider theme={toastTheme}>
           <ToastProvider>
             <NavBar />
-            <Box height={"3vh"} />
             {children}
           </ToastProvider>
         </ThemeProvider>
