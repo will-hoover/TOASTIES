@@ -22,22 +22,24 @@ const RoomMenu = ({ text, roomCount, stats }: RoomMenuProps) => {
     setAnchorEl(null);
   };
 
-  const menuNavigate = (room: number) => {
-    return () => (window.location.href = `/${route}/${room}`);
-  };
-
   const getMenuItems = () => {
     const items = [];
     for (let i = 0; i < roomCount; i++) {
       items.push(
-        <MenuItem key={i + 1} onClick={menuNavigate(i + 1)}>
+        <MenuItem
+          key={i + 1}
+          onClick={() => (window.location.href = `/toasties/${route}/${i + 1}`)}
+        >
           Room {i + 1}
         </MenuItem>,
       );
     }
     if (stats)
       items.push(
-        <MenuItem key="combined" onClick={menuNavigate(0)}>
+        <MenuItem
+          key="combined"
+          onClick={() => (window.location.href = `/toasties/${route}`)}
+        >
           Combined
         </MenuItem>,
       );

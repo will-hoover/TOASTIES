@@ -1,6 +1,6 @@
 "use client";
 import { Toast } from "@/utilities/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContext } from "./ToastContext";
 
 interface ToastProviderProps {
@@ -8,8 +8,12 @@ interface ToastProviderProps {
 }
 
 const ToastProvider = ({ children }: ToastProviderProps) => {
-  const id = sessionStorage.getItem("toast");
-  const [toast, setToast] = useState<Toast | null>(id ? JSON.parse(id) : null);
+  const [toast, setToast] = useState<Toast | null>(null);
+
+  useEffect(() => {
+    const t = sessionStorage.getItem("toast");
+    if (t) setToast(JSON.parse(t));
+  }, []);
 
   const setToastContext = (t: Toast | null) => {
     setToast(t);

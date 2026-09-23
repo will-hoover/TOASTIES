@@ -1,14 +1,7 @@
 "use client";
 
 import { rooms } from "@/utilities/toastiesActions";
-import {
-  Alert,
-  AppBar,
-  Button,
-  Snackbar,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, Button, Toolbar, Typography } from "@mui/material";
 import { use, useEffect, useState } from "react";
 import RoomMenu from "./RoomMenu";
 import butterytoast from "../../public/toast.png";
@@ -18,10 +11,7 @@ import { ToastContext } from "@/context/ToastContext";
 
 const NavBar = () => {
   const [roomCount, setRoomCount] = useState<number>(0);
-  const [open, setOpen] = useState(false);
   const { toast } = use(ToastContext);
-
-  const handleSnackbarClose = () => setOpen(false);
 
   useEffect(() => {
     if (toast !== null) {
@@ -73,20 +63,6 @@ const NavBar = () => {
           )}
         </Toolbar>
       </AppBar>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}
-          onClose={handleSnackbarClose}
-        >
-          Successfuly added room {roomCount}
-        </Alert>
-      </Snackbar>
     </div>
   );
 };

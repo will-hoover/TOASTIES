@@ -1,11 +1,13 @@
 export type Toast = {
-  id: string | null;
+  id: string;
   number: number;
   name: string;
   date: Date;
   content: "Trash" | "Academic";
   rooms: number;
 };
+
+export type ToastDetails = Omit<Toast, "id">;
 
 export type Player = {
   id: string;

@@ -1,5 +1,5 @@
 "use client";
-import { Toast } from "@/utilities/types";
+import { ToastDetails } from "@/utilities/types";
 import {
   Button,
   Dialog,
@@ -35,14 +35,13 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
 
   const formik = useFormik({
     initialValues: {
-      id: null,
       number: 0,
       name: "",
       date: new Date(),
       content: "Trash",
       rooms: 0,
     },
-    onSubmit: async (toast: Toast) => {
+    onSubmit: async (toast: ToastDetails) => {
       console.log("fired");
       setSubmitLoading(true);
       setSubmitError(false);
@@ -51,8 +50,10 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
         setSubmitError(true);
         return;
       }
-      toast.id = response.id;
-      setToast(toast);
+      setToast({
+        id: response.id,
+        ...toast,
+      });
       setSubmitLoading(false);
       setOpen(false);
       window.location.href = "/toasties";

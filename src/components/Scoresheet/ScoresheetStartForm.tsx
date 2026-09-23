@@ -7,6 +7,7 @@ import {
   Button,
   Container,
   Skeleton,
+  Typography,
 } from "@mui/material";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { KeyboardEvent, useEffect, useState } from "react";
@@ -51,7 +52,7 @@ const ScoresheetStartForm = ({
   const FormTextField = (props: { label: string }) => <TextField {...props} />;
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs" sx={{ marginTop: "5vh" }}>
       {room && roster ? (
         <Formik
           initialValues={{
@@ -72,6 +73,7 @@ const ScoresheetStartForm = ({
               }}
             >
               <Stack spacing={"1.5vh"}>
+                <Typography variant="h4">Start New Scoresheet</Typography>
                 <Field
                   as={FormTextField}
                   name="writer"

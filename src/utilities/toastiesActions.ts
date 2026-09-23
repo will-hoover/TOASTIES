@@ -1,9 +1,9 @@
 import axios from "axios";
-import { Scoresheet, Statsheet, Toast } from "./types";
+import { Scoresheet, Statsheet, Toast, ToastDetails } from "./types";
 
 const base_url = "http://localhost:8000"; // Default host for API
 
-export async function startToast(toast: Toast) {
+export async function startToast(toast: ToastDetails) {
   const response = await axios
     .post(`${base_url}/start`, toast)
     .catch((reason) => {
@@ -41,7 +41,7 @@ export async function rooms(toast?: string) {
 export async function addRoom() {
   const response = await axios.post(`${base_url}/addroom`);
   if (response.status === 200) {
-    return response.data["new room number"];
+    return response.data["rooms"];
   } else {
     return response.data["message"];
   }

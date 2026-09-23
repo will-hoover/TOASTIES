@@ -1,4 +1,5 @@
 "use client";
+import GradientStripe from "@/components/GradientStripe";
 import StatTable from "@/components/Statsheet/StatTable";
 import { getStats } from "@/utilities/toastiesActions";
 import { Statsheet } from "@/utilities/types";
@@ -14,7 +15,7 @@ import {
 import { useEffect, useState } from "react";
 
 const StatsPage = ({ params }: { params: Promise<{ room: number }> }) => {
-  const [room, setRoom] = useState<number>(-1);
+  const [room, setRoom] = useState<number | undefined>(-1);
   const [currentSheet, setCurrentSheet] = useState("Overall");
   const [writers, setWriters] = useState<string[]>([]);
   const [statsheets, setStatsheets] = useState<Statsheet[]>([]);
@@ -30,8 +31,10 @@ const StatsPage = ({ params }: { params: Promise<{ room: number }> }) => {
 
   useEffect(() => {
     const getStatsheets = async () => {
+      if (room == -1) return;
       setLoading(true);
       const statsheets = await getStats(room);
+      console.log(statsheets);
       setWriters(statsheets.map((s) => s.writer));
       setStatsheets(statsheets);
       setLoading(false);
@@ -46,9 +49,11 @@ const StatsPage = ({ params }: { params: Promise<{ room: number }> }) => {
   return (
     <Container maxWidth="xl" sx={{ mb: "3vh" }}>
       <Stack direction={"column"}>
-        <Typography variant="h2" align="center" sx={{ mb: "1vh" }}>
-          Tournament Stats - {room === 0 ? "Combined" : `Room ${room}`}
-        </Typography>
+        <GradientStripe
+          text={`Tournament Stats - ${room ? `Room ${room}` : "Combined"}`}
+          height={2}
+          textHeading="h2"
+        />
         {loading ? (
           <Skeleton variant="rectangular" height={"60vh"} />
         ) : (
@@ -60,17 +65,20 @@ const StatsPage = ({ params }: { params: Promise<{ room: number }> }) => {
               </p>
             ) : (
               <>
-                <Select
-                  value={currentSheet}
-                  onChange={handleSheetChange}
-                  sx={{ mb: "1vh", maxWidth: "30vw" }}
-                >
-                  {writers.map((writer) => (
-                    <MenuItem key={writer} value={writer}>
-                      {writer}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <Stack direction="column" sx={{ my: "2vh" }}>
+                  <Typography variant="body2">Packet subset</Typography>
+                  <Select
+                    value={currentSheet}
+                    onChange={handleSheetChange}
+                    sx={{ maxWidth: "30vw" }}
+                  >
+                    {writers.map((writer) => (
+                      <MenuItem key={writer} value={writer}>
+                        {writer}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Stack>
                 <StatTable
                   stats={statsheets.at(writers.indexOf(currentSheet))?.stats}
                 />

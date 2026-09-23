@@ -17,7 +17,7 @@ const ScoresheetForm = (props: ScoresheetProps) => {
   const [results, setResults] = useState<Buzz[][]>([]);
   const [submitLoading, setSubmitLoading] = useState(false);
   const { toast } = use(ToastContext);
-  const [invalidToast, setInvalidToast] = useState(false);
+  const [noToastOnSubmit, setNoToastOnSubmit] = useState(false);
 
   const addQuestion = () => {
     setResults([...results, []]);
@@ -43,12 +43,12 @@ const ScoresheetForm = (props: ScoresheetProps) => {
   });
 
   const onSubmitClick = async () => {
-    if (invalidToast || toast == undefined) {
-      setInvalidToast(true);
+    if (toast == null) {
+      setNoToastOnSubmit(true);
       return;
     }
     const scoresheet: Scoresheet = {
-      toast: toast?.id,
+      toast: toast.id,
       room: props.room,
       writer: props.writer,
       reader: props.reader === "" ? undefined : props.reader,
@@ -66,7 +66,7 @@ const ScoresheetForm = (props: ScoresheetProps) => {
   return (
     <Container onKeyDown={handleKeyboardAddQuestion}>
       <Stack spacing={3}>
-        <Typography variant="h3" fontWeight={"bold"}>
+        <Typography variant="h3" sx={{ fontWeight: 400 }}>
           Packet writer: {props.writer}
         </Typography>
         <Typography variant="h4">
