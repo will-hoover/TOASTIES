@@ -11,9 +11,9 @@ export async function startToast(toast: ToastDetails) {
       return;
     });
   if (response?.status !== 201) {
-    return null;
+    return { message: response?.data["message"], id: "null" };
   }
-  return response?.data as { number: number; id: string };
+  return response?.data as { number: number; id: string; message: string };
 }
 
 export async function getLiveToast() {
@@ -21,7 +21,10 @@ export async function getLiveToast() {
     console.log(`an error occured: ${reason}`);
     return;
   });
-  return response?.data as Toast | undefined;
+  if (response?.status === 404) {
+    return null;
+  }
+  return response?.data as Toast;
 }
 
 export async function endToast() {

@@ -2,6 +2,7 @@
 import { Toast } from "@/utilities/types";
 import { useEffect, useState } from "react";
 import { ToastContext } from "./ToastContext";
+import { getLiveToast } from "@/utilities/toastiesActions";
 
 interface ToastProviderProps {
   children: React.ReactNode;
@@ -11,8 +12,13 @@ const ToastProvider = ({ children }: ToastProviderProps) => {
   const [toast, setToast] = useState<Toast | null>(null);
 
   useEffect(() => {
+    const loadToast = async () => {
+      const t = await getLiveToast();
+      if (t) setToast(t);
+    };
     const t = sessionStorage.getItem("toast");
     if (t) setToast(JSON.parse(t));
+    else loadToast();
   }, []);
 
   const setToastContext = (t: Toast | null) => {

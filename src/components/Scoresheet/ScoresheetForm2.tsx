@@ -1,10 +1,12 @@
 "use client";
 import { Buzz, Scoresheet } from "@/utilities/types";
 import { Button, Container, Stack, Typography } from "@mui/material";
-import { useState, KeyboardEvent, use } from "react";
+import { useState, KeyboardEvent, use, useEffect } from "react";
 import QuestionEntry from "./QuestionEntry";
 import { submitPacket } from "@/utilities/toastiesActions";
 import { ToastContext } from "@/context/ToastContext";
+import ConfirmAlert from "../ConfirmAlert";
+import { useRouter } from "next/router";
 
 type ScoresheetProps = {
   room: number;
@@ -18,6 +20,38 @@ const ScoresheetForm = (props: ScoresheetProps) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const { toast } = use(ToastContext);
   const [noToastOnSubmit, setNoToastOnSubmit] = useState(false);
+  const [alertOpen, setAlertOpen] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const router = useRouter();
+
+  let pendingUrl: string | null = null;
+
+  useEffect(() => {
+    if (submitted) return;
+
+    const handleBeforePopState = (state: { url: string; as?: string }) => {
+      pendingUrl = state.url;
+      setAlertOpen(true);
+      return false;
+    };
+    router.beforePopState(handleBeforePopState);
+    return () => {
+      router.beforePopState(() => true);
+    };
+  }, [router, submitted]);
+
+  const handleConfirm = () => {
+    setAlertOpen(false);
+    if (pendingUrl) {
+      router.push(pendingUrl).catch(() => {});
+    } else {
+      window.location.reload();
+    }
+  };
+
+  const handleCancel = () => {
+    setAlertOpen(false);
+  };
 
   const addQuestion = () => {
     setResults([...results, []]);
@@ -92,6 +126,12 @@ const ScoresheetForm = (props: ScoresheetProps) => {
           Submit Packet
         </Button>
       </Stack>
+      <ConfirmAlert
+        open={alertOpen}
+        message="Leave now? Unsubmitted scoresheet changes will be lost"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </Container>
   );
 };

@@ -26,11 +26,13 @@ interface StartToastFormProps {
 
 const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const { setToast } = use(ToastContext);
 
   const handleClose = () => {
     setOpen(false);
+    setError(false);
   };
 
   const formik = useFormik({
@@ -44,10 +46,14 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
     onSubmit: async (toast: ToastDetails) => {
       console.log("fired");
       setSubmitLoading(true);
-      setSubmitError(false);
+      setError(false);
       const response = await startToast(toast);
-      if (!response) {
-        setSubmitError(true);
+      if (
+        (response.message && response.message != "") ||
+        response.id === "null"
+      ) {
+        setError(true);
+        setErrorMessage(response.message ?? "No id returned");
         return;
       }
       setToast({
@@ -127,9 +133,9 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
           Submit
         </Button>
       </DialogActions>
-      {submitError ?? (
+      {error ?? (
         <Typography color="red" variant="body2">
-          A backend error has occured; please try again or contact support
+          {errorMessage}
         </Typography>
       )}
     </Dialog>

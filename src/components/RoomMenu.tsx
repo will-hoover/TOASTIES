@@ -1,16 +1,19 @@
 "use client";
+import { SxProps } from "@mui/material";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { Theme } from "@mui/material/styles";
 import { useState, MouseEvent } from "react";
 
 type RoomMenuProps = {
   text: string;
   roomCount: number;
   stats?: boolean;
+  sx?: SxProps<Theme>;
 };
 
-const RoomMenu = ({ text, roomCount, stats }: RoomMenuProps) => {
+const RoomMenu = ({ text, roomCount, stats, sx }: RoomMenuProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -56,7 +59,7 @@ const RoomMenu = ({ text, roomCount, stats }: RoomMenuProps) => {
         onClick={handleClick}
         variant="contained"
         color="secondary"
-        sx={{ marginX: 1.5 }}
+        sx={sx}
       >
         {text}
       </Button>

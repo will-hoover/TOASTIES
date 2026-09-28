@@ -1,12 +1,19 @@
 // import Image from "next/image";
 "use client";
 import StartToastForm from "@/components/StartToastForm";
+import { ToastContext } from "@/context/ToastContext";
 import { juiceOrange, tigerOrange } from "@/utilities/toastThemes";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 const Home = () => {
   const [startOpen, setStartOpen] = useState(false);
+  const { toast } = useContext(ToastContext);
+
+  const handleToastStart = () => {
+    if (toast) window.location.href = "/toasties";
+    else setStartOpen(true);
+  };
 
   return (
     <Stack
@@ -45,7 +52,7 @@ const Home = () => {
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => setStartOpen(true)}
+            onClick={handleToastStart}
             sx={{
               width: "15vw",
               padding: "15px",

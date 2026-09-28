@@ -40,7 +40,11 @@ const NavBar = () => {
           </Link>
           {toast ? (
             <>
-              <RoomMenu text="Start packet" roomCount={roomCount} />
+              <RoomMenu
+                text="Start packet"
+                roomCount={roomCount}
+                sx={{ marginRight: "20px" }}
+              />
               <RoomMenu text="Stats" roomCount={roomCount} stats />
             </>
           ) : (
