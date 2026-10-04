@@ -44,16 +44,18 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
       rooms: 0,
     },
     onSubmit: async (toast: ToastDetails) => {
-      console.log("fired");
       setSubmitLoading(true);
       setError(false);
       const response = await startToast(toast);
-      if (
-        (response.message && response.message != "") ||
-        response.id === "null"
-      ) {
+      if (response.code !== 201 || response.id === "null") {
         setError(true);
-        setErrorMessage(response.message ?? "No id returned");
+        if (response.code === 409) {
+          setErrorMessage(
+            "Improper toast request. Ensure the right number has been selected.",
+          );
+        } else {
+          setErrorMessage("Failed to start toast.");
+        }
         return;
       }
       setToast({

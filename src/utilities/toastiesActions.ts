@@ -6,14 +6,14 @@ const base_url = "http://localhost:8000"; // Default host for API
 export async function startToast(toast: ToastDetails) {
   const response = await axios
     .post(`${base_url}/start`, toast)
-    .catch((reason) => {
-      console.log(`an error occured: ${reason}`);
-      return;
+    .catch((error) => {
+      console.log(`an error occured: ${error.response?.data.description}`);
+      return { status: error.response.status, data: {} };
     });
-  if (response?.status !== 201) {
-    return { message: response?.data["message"], id: "null" };
-  }
-  return response?.data as { number: number; id: string; message: string };
+  return {
+    code: response?.status,
+    ...(response?.data as { number: number; id: string }),
+  };
 }
 
 export async function getLiveToast() {

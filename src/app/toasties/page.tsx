@@ -10,7 +10,7 @@ import { use, useState } from "react";
 const ToastiesHome = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const { toast } = use(ToastContext);
+  const { toast, setToast } = use(ToastContext);
   const [roomCount, setRoomCount] = useState(toast?.rooms);
   const [confirmEndOpen, setConfirmEndOpen] = useState<boolean>(false);
   const confirmEndMessage = `Are you sure you're ready to end ${toast?.name}? Toasts cannot be restarted, so if more edits are needed, you'll need to get The Hoove involved.`;
@@ -20,7 +20,9 @@ const ToastiesHome = () => {
     if (!success) {
       // TODO: display error to user
       console.log("Error ending toast");
+      return;
     }
+    setToast(null);
     // TODO: set this to the pantry stats page for this toast when implemented
     window.location.href = "/";
   };
