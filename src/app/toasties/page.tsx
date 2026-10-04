@@ -2,14 +2,15 @@
 import ConfirmAlert from "@/components/ConfirmAlert";
 import GradientStripe from "@/components/GradientStripe";
 import RoomMenu from "@/components/RoomMenu";
+import SuccessAlert from "@/components/SuccessAlert";
 import { ToastContext } from "@/context/ToastContext";
 import { addRoom, endToast } from "@/utilities/toastiesActions";
-import { Alert, Box, Button, Snackbar, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { use, useState } from "react";
 
 const ToastiesHome = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false);
+  const [roomSuccessOpen, setRoomSuccessOpen] = useState<boolean>(false);
   const { toast, setToast } = use(ToastContext);
   const [roomCount, setRoomCount] = useState(toast?.rooms);
   const [confirmEndOpen, setConfirmEndOpen] = useState<boolean>(false);
@@ -37,10 +38,8 @@ const ToastiesHome = () => {
     if (toast) toast.rooms = newRoom;
     setRoomCount(newRoom);
     setLoading(false);
-    setOpen(true);
+    setRoomSuccessOpen(true);
   };
-
-  const handleSnackbarClose = () => setOpen(false);
 
   return toast ? (
     <Stack
@@ -86,20 +85,9 @@ const ToastiesHome = () => {
           </Button>
         </Stack>
       </Box>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}
-          onClose={handleSnackbarClose}
-        >
-          Successfuly added room {roomCount}
-        </Alert>
-      </Snackbar>
+      <SuccessAlert open={roomSuccessOpen} setOpen={setRoomSuccessOpen}>
+        Successfully added room {roomCount}.
+      </SuccessAlert>
       <ConfirmAlert
         open={confirmEndOpen}
         message={confirmEndMessage}
