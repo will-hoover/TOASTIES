@@ -1,11 +1,11 @@
 "use client";
 import ConfirmAlert from "@/components/ConfirmAlert";
-import GradientStripe from "@/components/GradientStripe";
+import GradientBanner from "@/components/GradientBanner";
 import RoomMenu from "@/components/RoomMenu";
 import SuccessAlert from "@/components/SuccessAlert";
 import { ToastContext } from "@/context/ToastContext";
 import { addRoom, endToast } from "@/utilities/toastiesActions";
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { use, useState } from "react";
 
 const ToastiesHome = () => {
@@ -51,7 +51,15 @@ const ToastiesHome = () => {
         justifyItems: "center",
       }}
     >
-      <GradientStripe text={toast.name} />
+      <GradientBanner>
+        <Typography
+          variant="h1"
+          align="center"
+          sx={{ fontWeight: 400, color: "white" }}
+        >
+          {toast.name}
+        </Typography>
+      </GradientBanner>
       <Box sx={{ maxWidth: "300px" }}>
         <Stack direction={"column"} spacing={3}>
           <Stack direction={"row"} sx={{ width: "100%" }}>

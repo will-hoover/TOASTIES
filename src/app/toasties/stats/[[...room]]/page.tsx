@@ -1,5 +1,5 @@
 "use client";
-import GradientStripe from "@/components/GradientStripe";
+import GradientBanner from "@/components/GradientBanner";
 import StatTable from "@/components/Statsheet/StatTable";
 import { getStats } from "@/utilities/toastiesActions";
 import { Statsheet } from "@/utilities/types";
@@ -49,11 +49,15 @@ const StatsPage = ({ params }: { params: Promise<{ room: number }> }) => {
   return (
     <Container maxWidth="xl" sx={{ mb: "3vh" }}>
       <Stack direction={"column"}>
-        <GradientStripe
-          text={`Tournament Stats - ${room ? `Room ${room}` : "Combined"}`}
-          height={2}
-          textHeading="h2"
-        />
+        <GradientBanner height={2}>
+          <Typography
+            variant="h2"
+            align="center"
+            sx={{ fontWeight: 400, color: "white" }}
+          >
+            {`Tournament Stats - ${room ? `Room ${room}` : "Combined"}`}
+          </Typography>
+        </GradientBanner>
         {loading ? (
           <Skeleton variant="rectangular" height={"60vh"} />
         ) : (
