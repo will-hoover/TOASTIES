@@ -1,12 +1,12 @@
 "use client";
 import { Buzz, Scoresheet } from "@/utilities/types";
 import { Button, Container, Stack, Typography } from "@mui/material";
-import { useState, KeyboardEvent, use, useEffect } from "react";
+import { useState, KeyboardEvent, use } from "react";
 import QuestionEntry from "./QuestionEntry";
 import { submitPacket } from "@/utilities/toastiesActions";
 import { ToastContext } from "@/context/ToastContext";
-import ConfirmAlert from "../ConfirmAlert";
-import { useRouter } from "next/router";
+import SuccessAlert from "../Feedback/SuccessAlert";
+import NavigationGuard from "../Feedback/NavigationGuard";
 
 type ScoresheetProps = {
   room: number;
@@ -17,61 +17,34 @@ type ScoresheetProps = {
 
 const ScoresheetForm = (props: ScoresheetProps) => {
   const [results, setResults] = useState<Buzz[][]>([]);
-  const [submitLoading, setSubmitLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const { toast } = use(ToastContext);
   const [noToastOnSubmit, setNoToastOnSubmit] = useState(false);
-  const [alertOpen, setAlertOpen] = useState<boolean>(false);
-  const [submitted, setSubmitted] = useState<boolean>(false);
-  const router = useRouter();
+  const [successOpen, setSuccessOpen] = useState<boolean>(false);
+  const [isDirty, setIsDirty] = useState<boolean>(false);
 
-  let pendingUrl: string | null = null;
+  const confirmExitMessage = "Leave this page? Unsubmitted scores will not be saved."
 
-  useEffect(() => {
-    if (submitted) return;
-
-    const handleBeforePopState = (state: { url: string; as?: string }) => {
-      pendingUrl = state.url;
-      setAlertOpen(true);
-      return false;
-    };
-    router.beforePopState(handleBeforePopState);
-    return () => {
-      router.beforePopState(() => true);
-    };
-  }, [router, submitted]);
-
-  const handleConfirm = () => {
-    setAlertOpen(false);
-    if (pendingUrl) {
-      router.push(pendingUrl).catch(() => {});
-    } else {
-      window.location.reload();
-    }
-  };
-
-  const handleCancel = () => {
-    setAlertOpen(false);
-  };
-
-  const addQuestion = () => {
+  const handleAddQuestion = () => {
     setResults([...results, []]);
+    setIsDirty(true);
   };
 
-  const deleteQuestion = (index: number) => {
+  const handleDeleteQuestion = (index: number) => {
     const newResults = results.toSpliced(index, 1);
     setResults(newResults);
   };
 
   const handleKeyboardAddQuestion = (e: KeyboardEvent) => {
     if (e.key === "Enter" && e.shiftKey) {
-      addQuestion();
+      handleAddQuestion();
     }
   };
 
   const questionEntryProps = (question: Buzz[], index: number) => ({
     number: index + 1,
     buzzes: question,
-    handleDelete: () => deleteQuestion(index),
+    handleDelete: () => handleDeleteQuestion(index),
     roster: props.roster,
     current: index + 1 === results.length,
   });
@@ -90,15 +63,17 @@ const ScoresheetForm = (props: ScoresheetProps) => {
       questions: results,
     };
     setSubmitLoading(true);
-    console.log(props.room);
-    console.log(props.writer);
     const success = await submitPacket(scoresheet);
-    console.log(success);
     setSubmitLoading(false);
+    if (success) {
+      setSuccessOpen(true);
+      setIsDirty(false);
+    }
   };
 
   return (
     <Container onKeyDown={handleKeyboardAddQuestion}>
+      <NavigationGuard isDirty={isDirty} message={confirmExitMessage}/>
       <Stack spacing={3}>
         <Typography variant="h3" sx={{ fontWeight: 400 }}>
           Packet writer: {props.writer}
@@ -109,12 +84,12 @@ const ScoresheetForm = (props: ScoresheetProps) => {
         <Stack spacing={2}>
           {results.map((question, index) => (
             <QuestionEntry
-              key={index}
+              key={index} // TODO: Fix this to handle deletes properly
               {...questionEntryProps(question, index)}
             />
           ))}
         </Stack>
-        <Button variant="outlined" onClick={addQuestion}>
+        <Button variant="outlined" onClick={handleAddQuestion}>
           Add Question
         </Button>
         <Button
@@ -126,12 +101,9 @@ const ScoresheetForm = (props: ScoresheetProps) => {
           Submit Packet
         </Button>
       </Stack>
-      <ConfirmAlert
-        open={alertOpen}
-        message="Leave now? Unsubmitted scoresheet changes will be lost"
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-      />
+      <SuccessAlert open={successOpen} setOpen={setSuccessOpen}>
+        Packet successfully submitted
+      </SuccessAlert>
     </Container>
   );
 };

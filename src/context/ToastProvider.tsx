@@ -14,10 +14,10 @@ const ToastProvider = ({ children }: ToastProviderProps) => {
   useEffect(() => {
     const loadToast = async () => {
       const t = await getLiveToast();
-      if (t) setToast(t);
+      if (t) setToastContext(t);
     };
     const t = sessionStorage.getItem("toast");
-    if (t) setToast(JSON.parse(t));
+    if (t) setToastContext(JSON.parse(t));
     else loadToast();
   }, []);
 

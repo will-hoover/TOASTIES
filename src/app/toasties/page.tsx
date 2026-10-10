@@ -1,8 +1,8 @@
 "use client";
-import ConfirmAlert from "@/components/ConfirmAlert";
+import ConfirmAlert from "@/components/Feedback/ConfirmAlert";
 import GradientBanner from "@/components/GradientBanner";
 import RoomMenu from "@/components/RoomMenu";
-import SuccessAlert from "@/components/SuccessAlert";
+import SuccessAlert from "@/components/Feedback/SuccessAlert";
 import { ToastContext } from "@/context/ToastContext";
 import { addRoom, endToast } from "@/utilities/toastiesActions";
 import { Box, Button, Stack, Typography } from "@mui/material";
