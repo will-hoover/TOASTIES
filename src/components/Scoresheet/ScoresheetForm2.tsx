@@ -23,7 +23,8 @@ const ScoresheetForm = (props: ScoresheetProps) => {
   const [successOpen, setSuccessOpen] = useState<boolean>(false);
   const [isDirty, setIsDirty] = useState<boolean>(false);
 
-  const confirmExitMessage = "Leave this page? Unsubmitted scores will not be saved."
+  const confirmExitMessage =
+    "Leave this page? Unsubmitted scores will not be saved.";
 
   const handleAddQuestion = () => {
     setResults([...results, []]);
@@ -73,7 +74,7 @@ const ScoresheetForm = (props: ScoresheetProps) => {
 
   return (
     <Container onKeyDown={handleKeyboardAddQuestion}>
-      <NavigationGuard isDirty={isDirty} message={confirmExitMessage}/>
+      <NavigationGuard isDirty={isDirty} message={confirmExitMessage} />
       <Stack spacing={3}>
         <Typography variant="h3" sx={{ fontWeight: 400 }}>
           Packet writer: {props.writer}
