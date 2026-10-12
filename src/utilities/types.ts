@@ -1,4 +1,4 @@
-export type Toast = {
+export interface Toast {
   id: string;
   number: number;
   name: string;
@@ -9,7 +9,7 @@ export type Toast = {
 
 export type ToastDetails = Omit<Toast, "id">;
 
-export type Player = {
+export interface Player {
   id: string;
   firstName: string;
   lastName: string;
@@ -18,17 +18,17 @@ export type Player = {
 
 export type Points = 15 | 10 | -5;
 
-export type Buzz = {
+export interface Buzz {
   player: string;
   points: Points;
 };
 
-export type Question = {
+export interface Question {
   number: number;
   buzzes: Buzz[];
 };
 
-export type Scoresheet = {
+export interface Scoresheet {
   toast: string;
   room: number;
   writer: string;
@@ -37,7 +37,7 @@ export type Scoresheet = {
   questions: Buzz[][];
 };
 
-export type Statline = {
+export interface Statline {
   name: string;
   played: number;
   powers: number;
@@ -48,12 +48,12 @@ export type Statline = {
   tournaments?: number;
 };
 
-export type Statsheet = {
+export interface Statsheet {
   writer: string;
   stats: Statline[];
 };
 
-export type HistStatline = {
+export interface HistStatline {
   toast: string;
   stats: Statline;
 };

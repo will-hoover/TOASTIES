@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar";
 import { toastTheme } from "@/utilities/toastThemes";
 import { ThemeProvider } from "@mui/material";
 import ToastProvider from "@/context/ToastProvider";
+import PlayerProvider from "@/context/PlayerProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,8 +34,10 @@ export default function RootLayout({
       >
         <ThemeProvider theme={toastTheme}>
           <ToastProvider>
+            <PlayerProvider>
             <NavBar />
             {children}
+            </PlayerProvider>
           </ToastProvider>
         </ThemeProvider>
       </body>
