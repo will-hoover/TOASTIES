@@ -44,7 +44,7 @@ const QuestionEntry = ({
 
   return (
     <Stack direction={"row"} spacing={2}>
-      <Typography variant="h6" fontWeight={"bold"}>
+      <Typography variant="h6" sx={{ fontWeight: "bold" }}>
         {number}
       </Typography>
       <Stack spacing={1}>
