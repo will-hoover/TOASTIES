@@ -5,7 +5,7 @@ export interface Toast {
   date: Date;
   content: "Trash" | "Academic";
   rooms: number;
-};
+}
 
 export type ToastDetails = Omit<Toast, "id">;
 
@@ -14,19 +14,19 @@ export interface Player {
   firstName: string;
   lastName: string;
   lastToast: number;
-};
+}
 
 export type Points = 15 | 10 | -5;
 
 export interface Buzz {
   player: string;
   points: Points;
-};
+}
 
 export interface Question {
   number: number;
   buzzes: Buzz[];
-};
+}
 
 export interface Scoresheet {
   toast: string;
@@ -35,7 +35,7 @@ export interface Scoresheet {
   reader?: string;
   roster: string[];
   questions: Buzz[][];
-};
+}
 
 export interface Statline {
   name: string;
@@ -46,17 +46,17 @@ export interface Statline {
   written: number;
   read: number;
   tournaments?: number;
-};
+}
 
 export interface Statsheet {
   writer: string;
   stats: Statline[];
-};
+}
 
 export interface HistStatline {
   toast: string;
   stats: Statline;
-};
+}
 
 export const points = (statline: Statline) =>
   15 * statline.powers +

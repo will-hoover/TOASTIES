@@ -11,6 +11,7 @@ import {
   TextField,
 } from "@mui/material";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
+import PlayerSelect from "../PlayerSelect";
 
 type BuzzEntryProps = {
   addBuzz: (buzz: Buzz) => void;
@@ -19,7 +20,7 @@ type BuzzEntryProps = {
 };
 
 const BuzzEntry = ({ addBuzz, roster, onUnfocus }: BuzzEntryProps) => {
-  const [player, setPlayer] = useState("");
+  const [player, setPlayer] = useState<string | null>(null);
   const [points, setPoints] = useState<Points>(10);
   const [selecting, setSelecting] = useState(true);
 
@@ -28,7 +29,7 @@ const BuzzEntry = ({ addBuzz, roster, onUnfocus }: BuzzEntryProps) => {
   };
 
   const handleSubmit = () => {
-    if (player === "") return;
+    if (!player) return;
     const buzz = {
       player,
       points,
@@ -45,6 +46,34 @@ const BuzzEntry = ({ addBuzz, roster, onUnfocus }: BuzzEntryProps) => {
           break;
         }
         if (!selecting && player !== "") {
+          handleSubmit();
+          setSelecting(true);
+        } else {
+          setSelecting(false);
+        }
+        break;
+      case "Tab":
+        e.preventDefault();
+        if (points === 15) {
+          setPoints(10);
+        } else if (points === 10) {
+          setPoints(-5);
+        } else {
+          setPoints(15);
+        }
+        break;
+      default:
+        return undefined;
+    }
+  };
+
+  const testKeyPresses = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case "Enter":
+        if (e.shiftKey) {
+          break;
+        }
+        if (player) {
           handleSubmit();
           setSelecting(true);
         } else {
@@ -83,10 +112,15 @@ const BuzzEntry = ({ addBuzz, roster, onUnfocus }: BuzzEntryProps) => {
     <Stack
       direction={"row"}
       sx={{ padding: 0.5, border: "1px solid black", borderRadius: 2 }}
-      onKeyDown={handleKeyPresses}
+      onKeyDown={testKeyPresses}
       onBlur={onUnfocus}
     >
-      <Autocomplete
+      <PlayerSelect
+        playerIds={roster}
+        playerId={player}
+        setPlayerId={setPlayer}
+      />
+      {/* <Autocomplete
         autoSelect
         autoHighlight
         popupIcon={null}
@@ -98,7 +132,7 @@ const BuzzEntry = ({ addBuzz, roster, onUnfocus }: BuzzEntryProps) => {
         value={player}
         renderInput={renderAutocompleteTextField}
         sx={{ pr: "1vw", minWidth: "10vw" }}
-      />
+      /> */}
       <RadioGroup
         row
         id="points-selector"

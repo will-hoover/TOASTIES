@@ -1,8 +1,8 @@
 "use client";
+import { PlayerContext } from "@/context/PlayerContext";
 import { getRoster } from "@/utilities/toastiesActions";
 import {
   Chip,
-  TextField,
   Stack,
   Button,
   Container,
@@ -10,32 +10,47 @@ import {
   Typography,
 } from "@mui/material";
 import { Field, FieldArray, Form, Formik } from "formik";
-import { KeyboardEvent, useEffect, useState } from "react";
+import { KeyboardEvent, use, useEffect, useRef, useState } from "react";
+import PlayerSelect from "../PlayerSelect";
 
-type ScoresheetFormProps = {
+interface ScoresheetFormProps {
   room: number | null;
   setScoresheetValues: (roster: ScoresheetValues) => void;
-};
+}
 
-export type ScoresheetValues = {
+export interface ScoresheetValues {
   writer: string;
-  reader: string;
+  reader: string | null;
   roster: string[];
-};
+}
+
+interface FormikPassedProps {
+  label: string;
+}
 
 const ScoresheetStartForm = ({
   room,
   setScoresheetValues,
 }: ScoresheetFormProps) => {
   const [roster, setRoster] = useState<string[] | null>(null);
+  const { playerMap, getFullName } = use(PlayerContext);
+  const [writer, setWriter] = useState<string | null>(null);
+  const [reader, setReader] = useState<string | null>(null);
+  const [rosterSelected, setRosterSelected] = useState<string | null>(null);
 
-  const handleNameSubmit = (push: (name: string) => void) => {
-    const enterName = document.querySelector(
-      "#enterName",
-    ) as HTMLTextAreaElement;
-    if (enterName.value !== "") {
-      push(enterName.value);
-      enterName.value = "";
+  const handleNameSubmit = (push: (playerId: string) => void) => {
+    if (rosterSelected) {
+      push(rosterSelected);
+      setRosterSelected(null);
+    }
+  };
+
+  const handleKeyPress = (
+    e: KeyboardEvent,
+    push: (playerId: string) => void,
+  ) => {
+    if (e.key === "Enter") {
+      handleNameSubmit(push);
     }
   };
 
@@ -49,18 +64,36 @@ const ScoresheetStartForm = ({
     prevRoster();
   }, [room]);
 
-  const FormTextField = (props: { label: string }) => <TextField {...props} />;
+  const WriterSelect = (props: FormikPassedProps) => (
+    <PlayerSelect
+      playerIds={playerMap.keys().toArray()}
+      playerId={writer}
+      setPlayerId={setWriter}
+      {...props}
+    />
+  );
+
+  const ReaderSelect = (props: FormikPassedProps) => (
+    <PlayerSelect
+      playerIds={playerMap.keys().toArray()}
+      playerId={reader}
+      setPlayerId={setReader}
+      {...props}
+    />
+  );
 
   return (
     <Container maxWidth="xs" sx={{ marginTop: "5vh" }}>
       {room && roster ? (
-        <Formik
+        <Formik<ScoresheetValues>
           initialValues={{
             writer: "",
-            reader: "",
+            reader: null,
             roster: roster,
           }}
           onSubmit={(values) => {
+            if (!values.writer && writer) values.writer = writer; // TODO: remove these two lines by properly connecting the PlayerSelect autocompletes with the formik fields
+            if (!values.reader) values.reader = reader;
             setScoresheetValues(values);
           }}
         >
@@ -75,14 +108,14 @@ const ScoresheetStartForm = ({
               <Stack spacing={"1.5vh"}>
                 <Typography variant="h4">Start New Scoresheet</Typography>
                 <Field
-                  as={FormTextField}
+                  as={WriterSelect}
                   name="writer"
                   label="Enter writer name"
                   type="text"
                   required
                 />
                 <Field
-                  as={FormTextField}
+                  as={ReaderSelect}
                   name="reader"
                   label="Enter reader name (leave blank for no reader)"
                   type="text"
@@ -90,25 +123,27 @@ const ScoresheetStartForm = ({
                 <FieldArray name="roster">
                   {({ remove, push }) => (
                     <div>
-                      <Stack direction={"row"} spacing={"1vw"}>
-                        <TextField
-                          id="enterName"
+                      <Stack direction={"row"} spacing={1}>
+                        <PlayerSelect
+                          playerIds={playerMap
+                            .keys()
+                            .toArray()
+                            .filter((id) => !values.roster.includes(id))}
+                          playerId={rosterSelected}
+                          setPlayerId={setRosterSelected}
+                          onKeyDown={(e: KeyboardEvent) =>
+                            handleKeyPress(e, push)
+                          }
                           label="Enter player names"
-                          onKeyDown={(e: KeyboardEvent) => {
-                            if (e.key === "Enter") {
-                              handleNameSubmit(push);
-                            }
-                          }}
-                          fullWidth
                         />
                         <Button onClick={() => handleNameSubmit(push)}>
                           Add
                         </Button>
                       </Stack>
-                      {values.roster.map((player, index) => (
+                      {values.roster.map((playerId, index) => (
                         <Chip
-                          key={index}
-                          label={player}
+                          key={playerId}
+                          label={getFullName(playerId)}
                           onDelete={() => remove(index)}
                         />
                       ))}

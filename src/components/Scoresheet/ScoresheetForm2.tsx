@@ -7,11 +7,12 @@ import { submitPacket } from "@/utilities/toastiesActions";
 import { ToastContext } from "@/context/ToastContext";
 import SuccessAlert from "../Feedback/SuccessAlert";
 import NavigationGuard from "../Feedback/NavigationGuard";
+import { PlayerContext } from "@/context/PlayerContext";
 
 type ScoresheetProps = {
   room: number;
   writer: string;
-  reader: string;
+  reader: string | null;
   roster: string[];
 };
 
@@ -19,6 +20,7 @@ const ScoresheetForm = (props: ScoresheetProps) => {
   const [results, setResults] = useState<Buzz[][]>([]);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const { toast } = use(ToastContext);
+  const { getFullName } = use(PlayerContext);
   const [noToastOnSubmit, setNoToastOnSubmit] = useState(false);
   const [successOpen, setSuccessOpen] = useState<boolean>(false);
   const [isDirty, setIsDirty] = useState<boolean>(false);
@@ -59,7 +61,7 @@ const ScoresheetForm = (props: ScoresheetProps) => {
       toast: toast.id,
       room: props.room,
       writer: props.writer,
-      reader: props.reader === "" ? undefined : props.reader,
+      reader: props.reader ? props.reader : undefined,
       roster: props.roster,
       questions: results,
     };
@@ -77,10 +79,11 @@ const ScoresheetForm = (props: ScoresheetProps) => {
       <NavigationGuard isDirty={isDirty} message={confirmExitMessage} />
       <Stack spacing={3}>
         <Typography variant="h3" sx={{ fontWeight: 400 }}>
-          Packet writer: {props.writer}
+          Packet writer: {getFullName(props.writer)}
         </Typography>
         <Typography variant="h4">
-          Packet reader: {props.reader === "" ? props.writer : props.reader}
+          Packet reader:{" "}
+          {props.reader ? getFullName(props.reader) : getFullName(props.writer)}
         </Typography>
         <Stack spacing={2}>
           {results.map((question, index) => (

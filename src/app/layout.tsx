@@ -35,8 +35,8 @@ export default function RootLayout({
         <ThemeProvider theme={toastTheme}>
           <ToastProvider>
             <PlayerProvider>
-            <NavBar />
-            {children}
+              <NavBar />
+              {children}
             </PlayerProvider>
           </ToastProvider>
         </ThemeProvider>

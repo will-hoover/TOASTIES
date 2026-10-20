@@ -6,7 +6,7 @@ export interface PlayerContextType {
   playerMap: Map<string, Player>;
   updateMap: (player?: Player) => void;
   getFullName: (id: string) => string;
-};
+}
 
 export const PlayerContext = createContext<PlayerContextType>({
   playerMap: new Map(),

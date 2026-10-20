@@ -51,14 +51,12 @@ const QuestionEntry = ({
         {displayBuzzes.map((buzz, index) => (
           <BuzzValue key={index} {...getBuzzValueProps(buzz)} />
         ))}
-        {current || active ? (
+        {active && (
           <BuzzEntry
             addBuzz={addBuzz}
             roster={roster}
             onUnfocus={() => setActive(false)}
           />
-        ) : (
-          <></>
         )}
       </Stack>
       <Stack>
