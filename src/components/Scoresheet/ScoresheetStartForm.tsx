@@ -135,6 +135,7 @@ const ScoresheetStartForm = ({
                             handleKeyPress(e, push)
                           }
                           label="Enter player names"
+                          autoFocus
                         />
                         <Button onClick={() => handleNameSubmit(push)}>
                           Add

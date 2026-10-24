@@ -16,6 +16,8 @@ export interface Player {
   lastToast: number;
 }
 
+export type PlayerDetails = Omit<Player, "id">;
+
 export type Points = 15 | 10 | -5;
 
 export interface Buzz {

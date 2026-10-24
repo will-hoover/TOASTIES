@@ -1,11 +1,11 @@
 import axios from "axios";
-import { Statsheet, Toast, Player } from "./types";
+import { Statsheet, Toast, Player, PlayerDetails } from "./types";
 
 const base_url = "http://localhost:8000/pantry"; // Default host for API
 
-export const addPlayer = async (player: Player) => {
+export const addPlayer = async (player: PlayerDetails) => {
   const response = await axios
-    .post(`${base_url}/addplayer`, player)
+    .post(`${base_url}/player`, player)
     .catch((reason) => {
       console.log(`an error occured: ${reason}`);
       return;

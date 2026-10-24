@@ -33,3 +33,12 @@ body {
   margin-bottom: 4vh;
   background-color: lightblue;
 }
+
+.bannerTitle {
+  font-weight: 400;
+  color: white;
+}
+
+.errorText {
+  color: red;
+}

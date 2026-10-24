@@ -21,6 +21,7 @@ const PlayerSelect = ({
   setPlayerId,
   onKeyDown = (e) => {},
   label,
+  autoFocus
 }: PlayerSelectProps) => {
   const { getFullName } = use(PlayerContext);
 
@@ -32,7 +33,7 @@ const PlayerSelect = ({
       label={label}
       sx={{ backgroundClip: "white" }}
       size="small"
-      autoFocus
+      autoFocus={autoFocus}
     />
   );
 

@@ -1,14 +1,11 @@
 "use client";
 import { Buzz, Points } from "@/utilities/types";
 import {
-  Autocomplete,
-  AutocompleteRenderInputParams,
   Button,
   FormControlLabel,
   Radio,
   RadioGroup,
   Stack,
-  TextField,
 } from "@mui/material";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 import PlayerSelect from "../PlayerSelect";
@@ -45,34 +42,6 @@ const BuzzEntry = ({ addBuzz, roster, onUnfocus }: BuzzEntryProps) => {
         if (e.shiftKey) {
           break;
         }
-        if (!selecting && player !== "") {
-          handleSubmit();
-          setSelecting(true);
-        } else {
-          setSelecting(false);
-        }
-        break;
-      case "Tab":
-        e.preventDefault();
-        if (points === 15) {
-          setPoints(10);
-        } else if (points === 10) {
-          setPoints(-5);
-        } else {
-          setPoints(15);
-        }
-        break;
-      default:
-        return undefined;
-    }
-  };
-
-  const testKeyPresses = (e: KeyboardEvent) => {
-    switch (e.key) {
-      case "Enter":
-        if (e.shiftKey) {
-          break;
-        }
         if (player) {
           handleSubmit();
           setSelecting(true);
@@ -95,44 +64,19 @@ const BuzzEntry = ({ addBuzz, roster, onUnfocus }: BuzzEntryProps) => {
     }
   };
 
-  const renderAutocompleteTextField = (
-    params: AutocompleteRenderInputParams,
-  ) => (
-    <TextField
-      {...params}
-      // onChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setPlayer(e.target.value)}
-      // value={player}
-      sx={{ backgroundClip: "white" }}
-      size="small"
-      autoFocus
-    />
-  );
-
   return (
     <Stack
       direction={"row"}
       sx={{ padding: 0.5, border: "1px solid black", borderRadius: 2 }}
-      onKeyDown={testKeyPresses}
+      onKeyDown={handleKeyPresses}
       onBlur={onUnfocus}
     >
       <PlayerSelect
         playerIds={roster}
         playerId={player}
         setPlayerId={setPlayer}
+        autoFocus
       />
-      {/* <Autocomplete
-        autoSelect
-        autoHighlight
-        popupIcon={null}
-        onOpen={() => {
-          setSelecting(true);
-        }}
-        options={roster}
-        onChange={(event, value) => setPlayer(value ?? "")}
-        value={player}
-        renderInput={renderAutocompleteTextField}
-        sx={{ pr: "1vw", minWidth: "10vw" }}
-      /> */}
       <RadioGroup
         row
         id="points-selector"
