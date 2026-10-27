@@ -42,15 +42,11 @@ const ToastiesHome = () => {
   };
 
   return toast ? (
-    <Stack
-      direction="column"
-      spacing={7}
-      sx={{
-        justifyContent: "center",
-        alginItems: "center",
-        justifyItems: "center",
-      }}
-    >
+    // <Stack
+    //   direction="column"
+    //   spacing={7}
+    // >
+    <>
       <GradientBanner>
         <Typography
           variant="h1"
@@ -60,7 +56,8 @@ const ToastiesHome = () => {
           {toast.name}
         </Typography>
       </GradientBanner>
-      <Box sx={{ maxWidth: "300px" }}>
+      <Typography variant="h2" sx={{textAlign: "center", padding: 5}}>Game Options</Typography>
+      <Box sx={{ maxWidth: "300px", margin: "auto" }}>
         <Stack direction={"column"} spacing={3}>
           <Stack direction={"row"} sx={{ width: "100%" }}>
             <RoomMenu
@@ -102,7 +99,8 @@ const ToastiesHome = () => {
         onConfirm={handleConfirmEnd}
         onCancel={() => setConfirmEndOpen(false)}
       />
-    </Stack>
+      </>
+    // </Stack>
   ) : (
     <p>:(</p>
   );
