@@ -50,7 +50,7 @@ const PlayerSelect = ({
       }}
       value={playerId}
       renderInput={(params) => renderAutocompleteTextField(params)}
-      sx={{ pr: "1vw", minWidth: "10vw" }}
+      sx={{ pr: "1vw", minWidth: "10vw", flex: 1 }}
     />
   );
 };

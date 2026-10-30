@@ -123,7 +123,7 @@ const ScoresheetStartForm = ({
                 <FieldArray name="roster">
                   {({ remove, push }) => (
                     <div>
-                      <Stack direction={"column"} spacing={1}>
+                      <Stack direction={"row"} spacing={1} useFlexGap>
                         <PlayerSelect
                           playerIds={playerMap
                             .keys()
