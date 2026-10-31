@@ -1,9 +1,11 @@
 "use client";
 import { Buzz } from "@/utilities/types";
-import { Button, Stack, Typography } from "@mui/material";
+import { IconButton, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import BuzzEntry from "./BuzzEntry";
 import BuzzValue from "./BuzzValue";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 type QuestionEntryProps = {
   number: number;
@@ -60,8 +62,8 @@ const QuestionEntry = ({
         )}
       </Stack>
       <Stack>
-        <Button onClick={() => setActive(true)}>E</Button>
-        <Button onClick={handleDelete}>X</Button>
+        <IconButton onClick={() => setActive(true)}><EditIcon /></IconButton>
+        <IconButton onClick={handleDelete}><DeleteIcon /></IconButton>
       </Stack>
     </Stack>
   );
