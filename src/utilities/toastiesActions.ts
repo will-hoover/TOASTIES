@@ -1,14 +1,20 @@
 import axios from "axios";
-import { Scoresheet, Statsheet, Toast, ToastDetails } from "./types";
+import {
+  AdminRequest,
+  Scoresheet,
+  Statsheet,
+  Toast,
+  ToastDetails,
+} from "./types";
 
 const base_url = "http://localhost:8000"; // Default host for API
 
-export async function startToast(toast: ToastDetails) {
+export async function startToast(toast: AdminRequest<ToastDetails>) {
   const response = await axios
     .post(`${base_url}/start`, toast)
     .catch((error) => {
       console.log(`an error occured: ${error.response?.data.description}`);
-      return { status: error.response.status, data: {} };
+      return { status: error.response?.status ?? 500, data: {} };
     });
   return {
     code: response?.status,
@@ -27,11 +33,13 @@ export async function getLiveToast() {
   return response?.data as Toast;
 }
 
-export async function endToast() {
-  const response = await axios.post(`${base_url}/end`).catch((reason) => {
-    console.log(`an error occured: ${reason}`);
-    return;
-  });
+export async function endToast(request: AdminRequest<null>) {
+  const response = await axios
+    .post(`${base_url}/end`, request)
+    .catch((reason) => {
+      console.log(`an error occured: ${reason}`);
+      return;
+    });
   return response?.status === 204;
 }
 

@@ -4,8 +4,8 @@ import { IconButton, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import BuzzEntry from "./BuzzEntry";
 import BuzzValue from "./BuzzValue";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 type QuestionEntryProps = {
   number: number;
@@ -62,8 +62,12 @@ const QuestionEntry = ({
         )}
       </Stack>
       <Stack>
-        <IconButton onClick={() => setActive(true)}><EditIcon /></IconButton>
-        <IconButton onClick={handleDelete}><DeleteIcon /></IconButton>
+        <IconButton onClick={() => setActive(true)}>
+          <EditIcon />
+        </IconButton>
+        <IconButton onClick={handleDelete}>
+          <DeleteIcon />
+        </IconButton>
       </Stack>
     </Stack>
   );

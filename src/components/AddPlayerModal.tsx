@@ -1,5 +1,5 @@
 "use client";
-import { PlayerDetails} from "@/utilities/types";
+import { PlayerDetails } from "@/utilities/types";
 import {
   Button,
   Dialog,
@@ -49,7 +49,7 @@ const AddPlayerModal = ({ open, setOpen }: AddPlayerModalProps) => {
       const response = await addPlayer(player);
       if (!response) {
         setError("Error ading player information");
-        setSubmitLoading(false)
+        setSubmitLoading(false);
         return;
       }
       setSubmitLoading(false);
@@ -102,7 +102,7 @@ const AddPlayerModal = ({ open, setOpen }: AddPlayerModalProps) => {
           </Button>
         </DialogActions>
         {error && (
-          <Typography variant="body2" sx={{color: "red"}}>
+          <Typography variant="body2" sx={{ color: "red" }}>
             {error}
           </Typography>
         )}

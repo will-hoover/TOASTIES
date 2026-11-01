@@ -65,6 +65,7 @@ const Home = () => {
           <Button
             variant="outlined"
             color="secondary"
+            href="/pantry"
             sx={{
               width: "15vw",
               padding: "15px",

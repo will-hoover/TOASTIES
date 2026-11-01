@@ -6,6 +6,7 @@ import { toastTheme } from "@/utilities/toastThemes";
 import { ThemeProvider } from "@mui/material";
 import ToastProvider from "@/context/ToastProvider";
 import PlayerProvider from "@/context/PlayerProvider";
+import AppStateProvider from "@/context/AppStateProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,12 +34,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider theme={toastTheme}>
-          <ToastProvider>
-            <PlayerProvider>
-              <NavBar />
-              {children}
-            </PlayerProvider>
-          </ToastProvider>
+          <AppStateProvider>
+            <ToastProvider>
+              <PlayerProvider>
+                <NavBar />
+                {children}
+              </PlayerProvider>
+            </ToastProvider>
+          </AppStateProvider>
         </ThemeProvider>
       </body>
     </html>

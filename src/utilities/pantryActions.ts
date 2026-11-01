@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Statsheet, Toast, Player, PlayerDetails } from "./types";
+import { Statsheet, Toast, Player, PlayerDetails, AdminRequest } from "./types";
 
 const base_url = "http://localhost:8000/pantry"; // Default host for API
 
@@ -48,4 +48,24 @@ export const getAllStats = async () => {
     return;
   });
   return response?.data as Statsheet[];
+};
+
+export const enablePlayerCreation = async (request: AdminRequest<null>) => {
+  const response = await axios
+    .post(`${base_url}/pc_enable`, request)
+    .catch((reason) => {
+      console.log(`an error occured: ${reason}`);
+      return;
+    });
+  return response?.data.allowed;
+};
+
+export const checkPlayerCreation = async () => {
+  const response = await axios
+    .get(`${base_url}/pc_enabled`)
+    .catch((reason) => {
+      console.log(`an error occured: ${reason}`);
+      return;
+    });
+  return response?.data.allowed;
 };

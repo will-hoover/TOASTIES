@@ -18,6 +18,11 @@ export interface Player {
 
 export type PlayerDetails = Omit<Player, "id">;
 
+export interface AdminRequest<T> {
+  password: string;
+  payload: T;
+}
+
 export type Points = 15 | 10 | -5;
 
 export interface Buzz {

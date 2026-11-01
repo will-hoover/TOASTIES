@@ -7,6 +7,7 @@ import { ToastContext } from "@/context/ToastContext";
 import { addRoom, endToast } from "@/utilities/toastiesActions";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { use, useState } from "react";
+import AdminConfirm from "@/components/Feedback/AdminConfirm";
 
 const ToastiesHome = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -16,16 +17,17 @@ const ToastiesHome = () => {
   const [confirmEndOpen, setConfirmEndOpen] = useState<boolean>(false);
   const confirmEndMessage = `Are you sure you're ready to end ${toast?.name}? Toasts cannot be restarted, so if more edits are needed, you'll need to get The Hoove involved.`;
 
-  const handleConfirmEnd = async () => {
-    const success = await endToast();
+  const handleConfirmEnd = async (password: string) => {
+    const success = await endToast({ password: password });
     if (!success) {
       // TODO: display error to user
       console.log("Error ending toast");
-      return;
+      return false;
     }
     setToast(null);
     // TODO: set this to the pantry stats page for this toast when implemented
     window.location.href = "/";
+    return true;
   };
 
   const handleAddRoom = async () => {
@@ -56,7 +58,9 @@ const ToastiesHome = () => {
           {toast.name}
         </Typography>
       </GradientBanner>
-      <Typography variant="h2" sx={{textAlign: "center", padding: 5}}>Game Options</Typography>
+      <Typography variant="h2" sx={{ textAlign: "center", padding: 5 }}>
+        Game Options
+      </Typography>
       <Box sx={{ maxWidth: "300px", margin: "auto" }}>
         <Stack direction={"column"} spacing={3}>
           <Stack direction={"row"} sx={{ width: "100%" }}>
@@ -93,15 +97,15 @@ const ToastiesHome = () => {
       <SuccessAlert open={roomSuccessOpen} setOpen={setRoomSuccessOpen}>
         Successfully added room {roomCount}.
       </SuccessAlert>
-      <ConfirmAlert
+      <AdminConfirm
         open={confirmEndOpen}
         message={confirmEndMessage}
         onConfirm={handleConfirmEnd}
         onCancel={() => setConfirmEndOpen(false)}
       />
-      </>
-    // </Stack>
+    </>
   ) : (
+    // </Stack>
     <p>:(</p>
   );
 };

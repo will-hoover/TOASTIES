@@ -21,7 +21,7 @@ const PlayerSelect = ({
   setPlayerId,
   onKeyDown = (e) => {},
   label,
-  autoFocus
+  autoFocus,
 }: PlayerSelectProps) => {
   const { getFullName } = use(PlayerContext);
 

@@ -1,5 +1,5 @@
 "use client";
-import { ToastDetails } from "@/utilities/types";
+import { AdminRequest, ToastDetails } from "@/utilities/types";
 import {
   Button,
   Dialog,
@@ -42,11 +42,22 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
       date: new Date(),
       content: "Trash",
       rooms: 0,
+      password: "",
     },
-    onSubmit: async (toast: ToastDetails) => {
+    onSubmit: async (values) => {
       setSubmitLoading(true);
       setError(false);
-      const response = await startToast(toast);
+      const request = {
+        password: values.password,
+        payload: {
+          number: values.number,
+          name: values.name,
+          date: values.date,
+          content: values.content as "Trash" | "Academic",
+          rooms: values.rooms,
+        },
+      };
+      const response = await startToast(request);
       if (response.code !== 201 || response.id === "null") {
         setError(true);
         if (response.code === 409) {
@@ -56,11 +67,12 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
         } else {
           setErrorMessage("Failed to start toast.");
         }
+        setSubmitLoading(false);
         return;
       }
       setToast({
         id: response.id,
-        ...toast,
+        ...request.payload,
       });
       setSubmitLoading(false);
       setOpen(false);
@@ -127,6 +139,15 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
               />
             </RadioGroup>
           </FormControl>
+          <TextField
+            id="password"
+            type="password"
+            label="Admin Key"
+            variant="standard"
+            margin="dense"
+            fullWidth
+            {...formik.getFieldProps("password")}
+          />
         </form>
       </DialogContent>
       <DialogActions>
