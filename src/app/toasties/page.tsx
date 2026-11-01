@@ -18,8 +18,8 @@ const ToastiesHome = () => {
   const confirmEndMessage = `Are you sure you're ready to end ${toast?.name}? Toasts cannot be restarted, so if more edits are needed, you'll need to get The Hoove involved.`;
 
   const handleConfirmEnd = async (password: string) => {
-    const success = await endToast({ password: password });
-    if (!success) {
+    const response = await endToast({ password: password, payload: null });
+    if (response.code !== 204) {
       // TODO: display error to user
       console.log("Error ending toast");
       return false;

@@ -36,11 +36,13 @@ export async function getLiveToast() {
 export async function endToast(request: AdminRequest<null>) {
   const response = await axios
     .post(`${base_url}/end`, request)
-    .catch((reason) => {
-      console.log(`an error occured: ${reason}`);
-      return;
+    .catch((error) => {
+      console.log(`an error occured: ${error.response?.data.description}`);
+      return { status: error.response?.status ?? 500, data: {} };
     });
-  return response?.status === 204;
+  return {
+    code: response?.status,
+  };
 }
 
 export async function rooms(toast?: string) {

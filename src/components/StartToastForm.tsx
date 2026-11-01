@@ -64,6 +64,8 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
           setErrorMessage(
             "Improper toast request. Ensure the right number has been selected.",
           );
+        } else if (response.code === 401) {
+          setErrorMessage("Admin key is incorrect")
         } else {
           setErrorMessage("Failed to start toast.");
         }
@@ -149,6 +151,11 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
             {...formik.getFieldProps("password")}
           />
         </form>
+        {error && 
+        <Typography className="errorText" variant="body2">
+          {errorMessage}
+        </Typography>
+      }
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
@@ -156,11 +163,6 @@ const StartToastForm = ({ open, setOpen }: StartToastFormProps) => {
           Submit
         </Button>
       </DialogActions>
-      {error ?? (
-        <Typography color="red" variant="body2">
-          {errorMessage}
-        </Typography>
-      )}
     </Dialog>
   );
 };

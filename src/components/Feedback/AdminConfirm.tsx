@@ -32,7 +32,7 @@ const AdminConfirm = ({
     },
     onSubmit: async (values) => {
       const success = await onConfirm(values.password);
-      setError(success);
+      setError(!success);
     },
   });
 
