@@ -61,11 +61,9 @@ export const enablePlayerCreation = async (request: AdminRequest<null>) => {
 };
 
 export const checkPlayerCreation = async () => {
-  const response = await axios
-    .get(`${base_url}/pc_enabled`)
-    .catch((reason) => {
-      console.log(`an error occured: ${reason}`);
-      return;
-    });
+  const response = await axios.get(`${base_url}/pc_enabled`).catch((reason) => {
+    console.log(`an error occured: ${reason}`);
+    return;
+  });
   return response?.data.allowed;
 };

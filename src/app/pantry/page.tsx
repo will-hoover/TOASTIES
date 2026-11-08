@@ -2,7 +2,7 @@
 import AddPlayerModal from "@/components/AddPlayerModal";
 import GradientBanner from "@/components/GradientBanner";
 import { AppStateContext } from "@/context/AppStateContext";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { use, useState } from "react";
 
 const PantryHome = () => {
@@ -16,9 +16,16 @@ const PantryHome = () => {
           Pantry
         </Typography>
       </GradientBanner>
-      {state.allowPlayerCreation && <Button onClick={() => setAddPlayerOpen(true)}>
-        Add player to database
-      </Button>}
+      <Typography variant="h3" sx={{ textAlign: "center", padding: 5 }}>
+        Pantry features will be added in version 2.1
+      </Typography>
+      <Box sx={{ margin: "auto", maxWidth: "20vw" }}>
+        {state.allowPlayerCreation && (
+          <Button onClick={() => setAddPlayerOpen(true)} fullWidth>
+            Add player to database
+          </Button>
+        )}
+      </Box>
       <AddPlayerModal open={addPlayerOpen} setOpen={setAddPlayerOpen} />
     </>
   );

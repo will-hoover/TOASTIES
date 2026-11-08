@@ -74,6 +74,9 @@ export const points = (statline: Statline) =>
 
 export const ppg = (statline: Statline) =>
   statline.played > 0
-    ? (15 * statline.powers + 10 * statline.gets + -5 * statline.negs) /
-      (statline.played / 20)
+    ? Math.round(
+        ((15 * statline.powers + 10 * statline.gets + -5 * statline.negs) /
+          (statline.played / 20)) *
+          100,
+      ) / 100
     : 0;

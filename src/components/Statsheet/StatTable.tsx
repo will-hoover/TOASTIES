@@ -1,3 +1,4 @@
+import { PlayerContext } from "@/context/PlayerContext";
 import { points, ppg, Statline } from "@/utilities/types";
 import {
   Paper,
@@ -8,15 +9,18 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { use } from "react";
 
-type StatTableProps = {
+interface StatTableProps {
   stats: Statline[] | undefined;
-};
+}
 
 const StatTable = ({ stats }: StatTableProps) => {
+  const { getFullName } = use(PlayerContext);
+
   const tableData = stats?.map((statline, index) => ({
     rank: index + 1,
-    name: statline.name,
+    name: getFullName(statline.name),
     played: statline.played,
     powers: statline.powers,
     gets: statline.gets,

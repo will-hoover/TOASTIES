@@ -1,9 +1,11 @@
 "use client";
 import GradientBanner from "@/components/GradientBanner";
 import StatTable from "@/components/Statsheet/StatTable";
+import { PlayerContext } from "@/context/PlayerContext";
 import { getStats } from "@/utilities/toastiesActions";
 import { Statsheet } from "@/utilities/types";
 import {
+  Box,
   Container,
   MenuItem,
   Select,
@@ -12,7 +14,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 const StatsPage = ({ params }: { params: Promise<{ room: number }> }) => {
   const [room, setRoom] = useState<number | undefined>(-1);
@@ -20,6 +22,7 @@ const StatsPage = ({ params }: { params: Promise<{ room: number }> }) => {
   const [writers, setWriters] = useState<string[]>([]);
   const [statsheets, setStatsheets] = useState<Statsheet[]>([]);
   const [loading, setLoading] = useState(false);
+  const { getFullName } = use(PlayerContext);
 
   useEffect(() => {
     const getRoomNumber = async () => {
@@ -47,17 +50,17 @@ const StatsPage = ({ params }: { params: Promise<{ room: number }> }) => {
   };
 
   return (
-    <Container maxWidth="xl" sx={{ mb: "3vh" }}>
-      <Stack direction={"column"}>
-        <GradientBanner height={2}>
-          <Typography
-            variant="h2"
-            align="center"
-            sx={{ fontWeight: 400, color: "white" }}
-          >
-            {`Tournament Stats - ${room ? `Room ${room}` : "Combined"}`}
-          </Typography>
-        </GradientBanner>
+    <Stack direction={"column"}>
+      <GradientBanner height={2}>
+        <Typography
+          variant="h2"
+          align="center"
+          sx={{ fontWeight: 400, color: "white" }}
+        >
+          {`Tournament Stats - ${room ? `Room ${room}` : "Combined"}`}
+        </Typography>
+      </GradientBanner>
+      <Box sx={{ margin: "auto" }}>
         {loading ? (
           <Skeleton variant="rectangular" height={"60vh"} />
         ) : (
@@ -78,7 +81,7 @@ const StatsPage = ({ params }: { params: Promise<{ room: number }> }) => {
                   >
                     {writers.map((writer) => (
                       <MenuItem key={writer} value={writer}>
-                        {writer}
+                        {writer === "Overall" ? writer : getFullName(writer)}
                       </MenuItem>
                     ))}
                   </Select>
@@ -90,8 +93,8 @@ const StatsPage = ({ params }: { params: Promise<{ room: number }> }) => {
             )}
           </>
         )}
-      </Stack>
-    </Container>
+      </Box>
+    </Stack>
   );
 };
 
